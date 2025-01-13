@@ -1,0 +1,22 @@
+.body-wrapper{
+  width: 800px;
+  height: 800px;
+  background-color: azure;
+  display: flex;
+}
+
+.first-square, .second-square{
+  width: 200px;
+  height: 200px;
+  position: absolute;
+  cursor: move; /* Курсор при наведении */
+}
+
+.first-square{
+  background-color: #5eaa2f;
+}
+
+.second-square{
+  background-color: plum;
+  left: 400px;
+}

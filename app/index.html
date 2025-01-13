@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+  <html class ="page" lang="ru">
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>  CatEnergy </title>
+      <link href="css/normalize.css" rel="stylesheet">
+      <link rel ="preload" href="css/app.min.css" as="style">
+      <link href="css/app.min.css" rel="stylesheet">
+      <link rel ="preload" href="../../fonts/oswaldregular.woff2" as="font" crossorigin>
+  </head>
+  <body class="page__body">
+    <div class = "body-wrapper" id = "container">
+      <div class = "first-square" id = "first-square">
+      </div>
+      <div class = "second-square"  id = "second-square">
+      </div>
+    </div>
+  </body>
+
+    <script>
+      const firstSquare = document.getElementById('first-square');
+      const secondSquare = document.getElementById('second-square');
+      const container = document.getElementById('container');
+      let isFirstSquareDragging = false;
+      let isSecondSquareDragging = false;
+      let currentActiveSquare;
+      let currentPassiveSquare;
+      let firstOffsetX, firstOffsetY, secondOffsetX, secondOffsetY;
+
+      firstSquare.addEventListener('mousedown', function(e) {
+        currentActiveSquare = firstSquare;
+        currentPassiveSquare = secondSquare;
+        offsetX = e.clientX - firstSquare.getBoundingClientRect().left;
+        offsetY = e.clientY - firstSquare.getBoundingClientRect().top;
+      });
+
+      secondSquare.addEventListener('mousedown', function(e) {
+        currentActiveSquare = secondSquare;
+        currentPassiveSquare = firstSquare;
+        offsetX = e.clientX - secondSquare.getBoundingClientRect().left;
+        offsetY = e.clientY - secondSquare.getBoundingClientRect().top;
+      });
+
+
+      window.addEventListener('mousemove', function(e) {
+        if (currentActiveSquare) {
+
+          let newX = e.clientX - offsetX;
+          let newY = e.clientY - offsetY;
+
+          // Получаем размеры контейнера
+          const containerRect = container.getBoundingClientRect();
+          const draggableRect = currentActiveSquare.getBoundingClientRect();
+          const passiveRect = currentPassiveSquare.getBoundingClientRect();
+
+          let isTopLeftInPassiveSquare = (
+            passiveRect.left < newX
+            & passiveRect.right > newX
+            & passiveRect.top < newY
+            & passiveRect.bottom > newY
+          )
+
+          let isTopRigthInPassiveSquare = (
+            passiveRect.left < (newX + draggableRect.width)
+            & passiveRect.right > (newX + draggableRect.width)
+            & passiveRect.top < newY
+            & passiveRect.bottom > newY
+          )
+
+
+          let isBottomRightInPassiveSquare = (
+            passiveRect.left < (newX + draggableRect.width)
+            & passiveRect.right > (newX + draggableRect.width)
+            & passiveRect.top < (newY + draggableRect.height)
+            & passiveRect.bottom > (newY + draggableRect.height)
+          )
+
+          let isBottomLeftInPassiveSquare = (
+            passiveRect.left < newX
+            & passiveRect.right > newX
+            & passiveRect.top < (newY + draggableRect.height)
+            & passiveRect.bottom > (newY + draggableRect.height)
+          )
+
+
+          if (isTopLeftInPassiveSquare){
+            newX = passiveRect.right + 1;
+            newY = passiveRect.top;
+          }
+
+          if (isTopRigthInPassiveSquare){
+            newX = passiveRect.left - passiveRect.width - 1;
+            newY = passiveRect.top;
+          }
+
+          if (isBottomRightInPassiveSquare){
+            newX = passiveRect.left;
+            newY = passiveRect.top - passiveRect.height - 1;
+          }
+
+          if (isBottomLeftInPassiveSquare){
+            newX = passiveRect.left;
+            newY = passiveRect.top - passiveRect.height - 1;
+          }
+
+          // Ограничиваем движение по горизонтали
+          if (newX < containerRect.left) newX = containerRect.left;
+          if (newX + draggableRect.width > containerRect.right) {
+            newX = containerRect.right - draggableRect.width;
+          }
+
+          // Ограничиваем движение по вертикали
+          if (newY < containerRect.top) newY = containerRect.top;
+          if (newY + draggableRect.height > containerRect.bottom) {
+            newY = containerRect.bottom - draggableRect.height;
+          }
+
+          currentActiveSquare.style.left = `${newX}px`;
+          currentActiveSquare.style.top = `${newY}px`;
+        }
+      });
+
+
+      // Окончание перетаскивания
+      window.addEventListener('mouseup', function() {
+        isFirstSquareDragging = false;
+        isSecondSquareDragging = false;
+        currentActiveSquare = null;
+      });
+
+    </script>
+
+</html>
