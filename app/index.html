@@ -85,23 +85,43 @@
 
 
           if (isTopLeftInPassiveSquare){
-            newX = passiveRect.right + 1;
-            newY = passiveRect.top;
+            if ( (passiveRect.right - newX) < (passiveRect.bottom - newY)){
+              newX = passiveRect.right + 1;
+              newY = passiveRect.top;
+            }else{
+              newX =  passiveRect.left;
+              newY = passiveRect.bottom + 1;
+            }
           }
 
           if (isTopRigthInPassiveSquare){
-            newX = passiveRect.left - passiveRect.width - 1;
-            newY = passiveRect.top;
+            if ( ((newX + draggableRect.width) - passiveRect.left) < (passiveRect.bottom - newY)) {
+              newX = passiveRect.left - draggableRect.width - 1;
+              newY = passiveRect.top;
+            }else {
+              newX =  passiveRect.left;
+              newY = passiveRect.bottom + 1;
+            }
           }
 
           if (isBottomRightInPassiveSquare){
-            newX = passiveRect.left;
-            newY = passiveRect.top - passiveRect.height - 1;
+            if ( ((newX + draggableRect.width) - passiveRect.left) > ((newY + draggableRect.height) - passiveRect.top)){
+              newX = passiveRect.left;
+              newY = passiveRect.top - passiveRect.height - 1;
+            }else{
+              newX = passiveRect.left - draggableRect.width - 1;
+              newY = passiveRect.top;
+            }
           }
 
           if (isBottomLeftInPassiveSquare){
-            newX = passiveRect.left;
-            newY = passiveRect.top - passiveRect.height - 1;
+            if ( (passiveRect.top - (newY + draggableRect.height)) > (newX - passiveRect.right)){
+              newX = passiveRect.left;
+              newY = passiveRect.top - passiveRect.height - 1;
+            }else{
+              newX = passiveRect.right + 1;
+              newY = passiveRect.top;
+            }
           }
 
           // Ограничиваем движение по горизонтали
