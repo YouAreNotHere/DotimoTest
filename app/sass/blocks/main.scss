@@ -1,4 +1,5 @@
 .body-wrapper{
+
   width: 800px;
   height: 800px;
   background-color: azure;
@@ -9,7 +10,7 @@
   width: 200px;
   height: 200px;
   position: absolute;
-  cursor: move; /* Курсор при наведении */
+  cursor: move;
 }
 
 .first-square{
@@ -19,4 +20,14 @@
 .second-square{
   background-color: plum;
   left: 400px;
+}
+
+.instument-bar{
+  position: absolute;
+  width: 150px;
+  height: 50px;
+  right: 20px;
+  top: 8px;
+  background-color: lavenderblush;
+  z-index: 1;
 }

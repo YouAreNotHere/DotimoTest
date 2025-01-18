@@ -1,4 +1,3 @@
-@charset "UTF-8";
 @font-face {
   font-family: Oswald;
   font-style: normal;
@@ -794,7 +793,7 @@
     -ms-grid-column-align: start;
         justify-self: start
   }
-  @media (min-width:1400px){
+  @media (min-width:1400px) {
   .example__resource:nth-child(1) {
       -ms-grid-row: 1;
       -ms-grid-column: 1
@@ -1592,6 +1591,15 @@
 .second-square {
   background-color: plum;
   left: 400px
+}
+.instument-bar {
+  position: absolute;
+  width: 150px;
+  height: 50px;
+  right: 20px;
+  top: 8px;
+  background-color: #fff0f5;
+  z-index: 1
 }
 .page-header {
   display: -webkit-box;
