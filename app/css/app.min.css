@@ -1601,6 +1601,16 @@
   background-color: #fff0f5;
   z-index: 1
 }
+.squares-wrapper {
+  position: relative;
+  top: 0;
+  left: 0;
+  background-color: #ffdead;
+  z-index: 2;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex
+}
 .page-header {
   display: -webkit-box;
   display: -ms-flexbox;

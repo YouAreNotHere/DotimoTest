@@ -27,21 +27,28 @@
       const secondSquare = document.getElementById('second-square');
       const squaresWrapper = document.getElementById('squares-wrapper');
       const container = document.getElementById('container');
-      let isFirstSquareDragging = false;
-      let isSecondSquareDragging = false;
+      let areSquaresBinded = false;
       let currentActiveSquare;
       let currentPassiveSquare;
 
       firstSquare.addEventListener('mousedown', function(e) {
-        currentActiveSquare = firstSquare;
-        currentPassiveSquare = secondSquare;
+        if (!areSquaresBinded){
+          currentActiveSquare = firstSquare;
+          currentPassiveSquare = secondSquare;
+        }else{
+          currentActiveSquare = squaresWrapper;
+        }
         offsetX = e.clientX - firstSquare.getBoundingClientRect().left;
         offsetY = e.clientY - firstSquare.getBoundingClientRect().top;
       });
 
       secondSquare.addEventListener('mousedown', function(e) {
-        currentActiveSquare = secondSquare;
-        currentPassiveSquare = firstSquare;
+        if (!areSquaresBinded){
+          currentActiveSquare = secondSquare;
+          currentPassiveSquare = firstSquare;
+        }else {
+          currentActiveSquare = squaresWrapper;
+        }
         offsetX = e.clientX - secondSquare.getBoundingClientRect().left;
         offsetY = e.clientY - secondSquare.getBoundingClientRect().top;
       });
@@ -53,52 +60,23 @@
           let newX = e.clientX - offsetX;
           let newY = e.clientY - offsetY;
 
+          console.log(newX);
+          console.log(newY);
+
           const containerRect = container.getBoundingClientRect();
           const draggableRect = currentActiveSquare.getBoundingClientRect();
-          const passiveRect = currentPassiveSquare.getBoundingClientRect();
-
-          const isTopLeftInPassiveSquare = (
-            passiveRect.left < newX
-            & passiveRect.right > newX
-            & passiveRect.top < newY
-            & passiveRect.bottom > newY
-          )
-          const isTopRigthInPassiveSquare = (
-            passiveRect.left < (newX + draggableRect.width)
-            & passiveRect.right > (newX + draggableRect.width)
-            & passiveRect.top < newY
-            & passiveRect.bottom > newY
-          )
-          const isBottomRightInPassiveSquare = (
-            passiveRect.left < (newX + draggableRect.width)
-            & passiveRect.right > (newX + draggableRect.width)
-            & passiveRect.top < (newY + draggableRect.height)
-            & passiveRect.bottom > (newY + draggableRect.height)
-          )
-          const isBottomLeftInPassiveSquare = (
-            passiveRect.left < newX
-            & passiveRect.right > newX
-            & passiveRect.top < (newY + draggableRect.height)
-            & passiveRect.bottom > (newY + draggableRect.height)
-          )
-
-          const isSquareOutOfSquare =
-            (!isBottomLeftInPassiveSquare && !isBottomRightInPassiveSquare && !isTopRigthInPassiveSquare && !isTopLeftInPassiveSquare);
+          let passiveRect;
+          if (!!currentPassiveSquare) passiveRect = currentPassiveSquare.getBoundingClientRect();
 
           const isSquareInLeftOfContainer = newX < containerRect.left || draggableRect.left < containerRect.left;
           const isSquareInRightOfContainer = newX + draggableRect.width > containerRect.right || draggableRect.right > containerRect.right;
           const isSquareInTopOfContainer = newY < containerRect.top || draggableRect.top < containerRect.top;
           const isSquareInBottomOfContainer = newY + draggableRect.height > containerRect.bottom || draggableRect.bottom > containerRect.bottom;
           const isSquareOutOfContainer =
-            (isSquareInBottomOfContainer || isSquareInTopOfContainer || isSquareInRightOfContainer || isSquareInLeftOfContainer);
-
-          const isTopLeftCornerInRightOfPassiveSquare = (passiveRect.right - newX) < (passiveRect.bottom - newY);
-          const isTopRightCornerInLeftOfPassiveSquare =
-            ((newX + draggableRect.width) - passiveRect.left) < (passiveRect.bottom - newY);
-          const isBottomRightCornerInTopOfPassiveSquare =
-            ((newX + draggableRect.width) - passiveRect.left) > ((newY + draggableRect.height) - passiveRect.top);
-          const isBottomLeftCornerInTopOfPassiveSquare =
-            (passiveRect.top - (newY + draggableRect.height)) > (newX - passiveRect.right);
+            (isSquareInBottomOfContainer
+              || isSquareInTopOfContainer
+              || isSquareInRightOfContainer
+              || isSquareInLeftOfContainer);
 
           const addTransitionToSquareStyle = () => {
             currentActiveSquare.style.transition = 'left 0.2s ease, top 0.2s ease';
@@ -107,87 +85,146 @@
 
           const makeWrapperActive = () => {
             currentActiveSquare = squaresWrapper;
+            // squaresWrapper.style.height = `${draggableRect.top + passiveRect.bottom}px`;
+            // squaresWrapper.style.width = `${400 - (draggableRect.right - passiveRect.left)}px`;
+            // squaresWrapper.style.height = `auto`;
+            // squaresWrapper.style.width = `auto`;
+            // firstSquare.style.position = "static";
+            // secondSquare.style.position = "static";
+
+            //wrapper почему-то улетает
+            setTimeout(()=>squaresWrapper.style.left = "0",0 )
+            squaresWrapper.style.top = `${0}px`;
+            squaresWrapper.style.left = "0";
           }
 
-          const makeActiveSquareInTopOfPassive = () => {
-            console.log("Make top!")
-              // newX = passiveRect.left;
+          if (!!passiveRect){
+            const isTopLeftInPassiveSquare = (
+              passiveRect.left < newX
+              & passiveRect.right > newX
+              & passiveRect.top < newY
+              & passiveRect.bottom > newY
+            )
+            const isTopRigthInPassiveSquare = (
+              passiveRect.left < (newX + draggableRect.width)
+              & passiveRect.right > (newX + draggableRect.width)
+              & passiveRect.top < newY
+              & passiveRect.bottom > newY
+            )
+            const isBottomRightInPassiveSquare = (
+              passiveRect.left < (newX + draggableRect.width)
+              & passiveRect.right > (newX + draggableRect.width)
+              & passiveRect.top < (newY + draggableRect.height)
+              & passiveRect.bottom > (newY + draggableRect.height)
+            )
+            const isBottomLeftInPassiveSquare = (
+              passiveRect.left < newX
+              & passiveRect.right > newX
+              & passiveRect.top < (newY + draggableRect.height)
+              & passiveRect.bottom > (newY + draggableRect.height)
+            )
+
+            const isSquareOutOfSquare =
+              (!isBottomLeftInPassiveSquare
+                && !isBottomRightInPassiveSquare
+                && !isTopRigthInPassiveSquare
+                && !isTopLeftInPassiveSquare);
+
+            const isTopLeftCornerInRightOfPassiveSquare = (passiveRect.right - newX) < (passiveRect.bottom - newY);
+            const isTopRightCornerInLeftOfPassiveSquare =
+              ((newX + draggableRect.width) - passiveRect.left) < (passiveRect.bottom - newY);
+            const isBottomRightCornerInTopOfPassiveSquare =
+              ((newX + draggableRect.width) - passiveRect.left) > ((newY + draggableRect.height) - passiveRect.top);
+            const isBottomLeftCornerInTopOfPassiveSquare =
+              (passiveRect.top - (newY + draggableRect.height)) > (newX - passiveRect.right);
+
+            const makeActiveSquareInTopOfPassive = () => {
+              console.log("Make top!")
               newY = passiveRect.top - passiveRect.height - 1;
               addTransitionToSquareStyle();
               makeWrapperActive();
-          };
-          const makeActiveSquareInLeftOfPassive = () => {
-            console.log("Make left!")
+              areSquaresBinded = true;
+            };
+            const makeActiveSquareInLeftOfPassive = () => {
+              console.log("Make left!")
               newX = passiveRect.left - draggableRect.width - 1;
-              // newY = passiveRect.top;
-            addTransitionToSquareStyle();
-          }
-          const makeActiveSquareInBottomOfPassive = () => {
-            console.log("Make bot!")
-            // newX =  passiveRect.left;
-            newY = passiveRect.bottom + 1;
-            addTransitionToSquareStyle();
-          }
-          const makeActiveSquareInRightOfPassive = () => {
-            console.log("Make right!")
-            newX = passiveRect.right + 1;
-            // newY = passiveRect.top;
-            addTransitionToSquareStyle();
-          }
+              addTransitionToSquareStyle();
+            }
+            const makeActiveSquareInBottomOfPassive = () => {
+              console.log("Make bot!")
+              newY = passiveRect.bottom + 1;
+              addTransitionToSquareStyle();
+            }
+            const makeActiveSquareInRightOfPassive = () => {
+              console.log("Make right!")
+              newX = passiveRect.right + 1;
+              addTransitionToSquareStyle();
+            }
 
-          if (isSquareInLeftOfContainer) newX = containerRect.left;
-          if (isSquareInRightOfContainer) newX = containerRect.right - draggableRect.width;
-          if (isSquareInTopOfContainer) newY = containerRect.top;
-          if (isSquareInBottomOfContainer) newY = containerRect.bottom - draggableRect.height;
+            if (isTopLeftInPassiveSquare){
+              if ( isTopLeftCornerInRightOfPassiveSquare){
+                makeActiveSquareInRightOfPassive()
+              }else{
+                makeActiveSquareInBottomOfPassive()
+              }
+            }
 
+            if (isTopRigthInPassiveSquare){
+              if ( isTopRightCornerInLeftOfPassiveSquare) {
+                makeActiveSquareInLeftOfPassive()
+              }else {
+                makeActiveSquareInBottomOfPassive()
+              }
+            }
 
-          if (isTopLeftInPassiveSquare){
-            if ( isTopLeftCornerInRightOfPassiveSquare){
-              makeActiveSquareInRightOfPassive()
-            }else{
+            if (isBottomRightInPassiveSquare){
+              if (isBottomRightCornerInTopOfPassiveSquare){
+                makeActiveSquareInTopOfPassive()
+              }else{
+                makeActiveSquareInLeftOfPassive()
+              }
+            }
+
+            if (isBottomLeftInPassiveSquare){
+              if (isBottomLeftCornerInTopOfPassiveSquare){
+                makeActiveSquareInTopOfPassive()
+              }else{
+                makeActiveSquareInRightOfPassive()
+              }
+            }
+
+            if (isSquareInTopOfContainer){
               makeActiveSquareInBottomOfPassive()
             }
-          }
-
-          if (isTopRigthInPassiveSquare){
-            if ( isTopRightCornerInLeftOfPassiveSquare) {
-              makeActiveSquareInLeftOfPassive()
-            }else {
-              makeActiveSquareInBottomOfPassive()
-            }
-          }
-
-          if (isBottomRightInPassiveSquare){
-            if (isBottomRightCornerInTopOfPassiveSquare){
-              makeActiveSquareInTopOfPassive()
-            }else{
-              makeActiveSquareInLeftOfPassive()
-            }
-          }
-
-          if (isBottomLeftInPassiveSquare){
-            if (isBottomLeftCornerInTopOfPassiveSquare){
-              makeActiveSquareInTopOfPassive()
-            }else{
+            if (isSquareInLeftOfContainer){
               makeActiveSquareInRightOfPassive()
             }
+            if (isSquareInRightOfContainer){
+              makeActiveSquareInLeftOfPassive()
+            }
+            if (isSquareInBottomOfContainer) {
+              makeActiveSquareInTopOfPassive()
+            }
           }
 
-          if (isSquareInTopOfContainer){
-            makeActiveSquareInBottomOfPassive()
-          }
-          if (isSquareInLeftOfContainer){
-            makeActiveSquareInRightOfPassive()
-          }
-          if (isSquareInRightOfContainer){
-            makeActiveSquareInLeftOfPassive()
-          }
-          if (isSquareInBottomOfContainer) {
-            makeActiveSquareInTopOfPassive()
+
+          if (!currentActiveSquare !== squaresWrapper){
+            if (isSquareInLeftOfContainer) newX = containerRect.left;
+            if (isSquareInRightOfContainer) newX = containerRect.right - draggableRect.width;
+            if (isSquareInTopOfContainer) newY = containerRect.top;
+            if (isSquareInBottomOfContainer) newY = containerRect.bottom - draggableRect.height;
           }
 
-          currentActiveSquare.style.left = `${newX}px`;
-          currentActiveSquare.style.top = `${newY}px`;
+
+
+          // if (currentActiveSquare !== squaresWrapper){
+            currentActiveSquare.style.left = `${newX}px`;
+            currentActiveSquare.style.top = `${newY}px`;
+          // }else{
+          //   currentActiveSquare.style.left = `${newX-193}px`;
+          //   currentActiveSquare.style.top = `${newY-68}px`;
+          // }
+
 
         }
       });
@@ -195,11 +232,9 @@
 
       // Окончание перетаскивания
       window.addEventListener('mouseup', function() {
-        isFirstSquareDragging = false;
-        isSecondSquareDragging = false;
-        currentActiveSquare.style.transition = "";
-        currentActiveSquare = null;
-        currentPassiveSquare = null;
+          currentActiveSquare.style.transition = "";
+          currentActiveSquare = null;
+          currentPassiveSquare = null;
       });
 
     </script>
