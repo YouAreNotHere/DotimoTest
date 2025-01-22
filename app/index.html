@@ -32,33 +32,35 @@
       let currentPassiveSquare;
 
       firstSquare.addEventListener('mousedown', function(e) {
-        // if (!areSquaresBinded){
-        //   currentActiveSquare = firstSquare;
-        //   currentPassiveSquare = secondSquare;
-        // }else{
-        //   currentActiveSquare = squaresWrapper;
-        // }
-        currentActiveSquare = firstSquare;
-        currentPassiveSquare = secondSquare;
+        if (!areSquaresBinded){
+          currentActiveSquare = firstSquare;
+          currentPassiveSquare = secondSquare;
+        }else{
+          currentActiveSquare = squaresWrapper;
+        }
+        // currentActiveSquare = firstSquare;
+        // currentPassiveSquare = secondSquare;
         offsetX = e.clientX - firstSquare.getBoundingClientRect().left;
         offsetY = e.clientY - firstSquare.getBoundingClientRect().top;
       });
 
       secondSquare.addEventListener('mousedown', function(e) {
-        // if (!areSquaresBinded){
-        //   currentActiveSquare = secondSquare;
-        //   currentPassiveSquare = firstSquare;
-        // }else {
-        //   currentActiveSquare = squaresWrapper;
-        // }
-        currentActiveSquare = secondSquare;
-        currentPassiveSquare = firstSquare;
+        if (!areSquaresBinded){
+          currentActiveSquare = secondSquare;
+          currentPassiveSquare = firstSquare;
+        }else {
+          currentActiveSquare = squaresWrapper;
+          console.log(`current wrapper`)
+        }
+        // currentActiveSquare = secondSquare;
+        // currentPassiveSquare = firstSquare;
         offsetX = e.clientX - secondSquare.getBoundingClientRect().left;
         offsetY = e.clientY - secondSquare.getBoundingClientRect().top;
       });
 
 
       window.addEventListener('mousemove', function(e) {
+        console.log(`current sq ${currentActiveSquare}`)
         if (currentActiveSquare) {
 
           let newX = e.clientX - offsetX;
@@ -85,13 +87,13 @@
           }
 
           const makeWrapperActive = () => {
-            // console.log(`${parseInt(currentPassiveSquare.style.left)}-${parseInt(currentActiveSquare.style.left)}px`);
-            // const currentPassiveLeft = currentPassiveSquare.left;
-            // const currentPassiveTop = currentPassiveSquare.top;
-            // squaresWrapper.top = currentActiveSquare.top;
-            // squaresWrapper.left = currentActiveSquare.left;
+            console.log(`${parseInt(currentPassiveSquare.style.left)}-${parseInt(currentActiveSquare.style.left)}px`);
+            const currentPassiveLeft = currentPassiveSquare.left;
+            const currentPassiveTop = currentPassiveSquare.top;
+            squaresWrapper.top = currentActiveSquare.top;
+            squaresWrapper.left = currentActiveSquare.left;
             // currentActiveSquare = squaresWrapper;
-            //
+
 
 
 
@@ -224,21 +226,21 @@
 
 
 
-          // if (currentActiveSquare !== squaresWrapper){
+          if (currentActiveSquare !== squaresWrapper){
+
             currentActiveSquare.style.left = `${newX}px`;
             currentActiveSquare.style.top = `${newY}px`;
+            // if (areSquaresBinded){
+            //   // currentPassiveSquare.style.left = `${parseInt(currentPassiveSquare.style.left) + offsetX}px`;
+            //   // currentPassiveSquare.style.left = `${parseInt(currentPassiveSquare.style.top) + offsetY}px`;
+            //   currentPassiveSquare.style.left = `${newX + 200}px`;
+            //   currentPassiveSquare.style.left = `${newY + 200}px`;
+            // }
 
-            if (areSquaresBinded){
-              // currentPassiveSquare.style.left = `${parseInt(currentPassiveSquare.style.left) + offsetX}px`;
-              // currentPassiveSquare.style.left = `${parseInt(currentPassiveSquare.style.top) + offsetY}px`;
-              currentPassiveSquare.style.left = `${newX + 200}px`;
-              currentPassiveSquare.style.left = `${newY + 200}px`;
-            }
-
-          // }else{
-          //   currentActiveSquare.style.left = `${newX-193}px`;
-          //   currentActiveSquare.style.top = `${newY-68}px`;
-          // }
+          }else{
+            currentActiveSquare.style.left = `${newX-193}px`;
+            currentActiveSquare.style.top = `${newY-68}px`;
+          }
 
 
         }
