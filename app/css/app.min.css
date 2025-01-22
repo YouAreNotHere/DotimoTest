@@ -1602,14 +1602,13 @@
   z-index: 1
 }
 .squares-wrapper {
-  position: relative;
+  position: absolute;
   top: 0;
   left: 0;
   background-color: #ffdead;
   z-index: 2;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex
+  width: 400px;
+  height: 400px
 }
 .page-header {
   display: -webkit-box;
