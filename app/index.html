@@ -37,10 +37,10 @@
       let newX, newY;
 
       const makeWrapperActive = () => {
-        console.log(`${parseInt(secondSquare.style.left) + parseInt(secondSquare.offsetWidth) - parseInt(firstSquare.style.left)}px`);
         if (parseInt(firstSquare.offsetLeft) < parseInt(secondSquare.offsetLeft)){
           squaresWrapper.style.width = `${parseInt(secondSquare.offsetLeft) + parseInt(secondSquare.offsetWidth) - parseInt(firstSquare.offsetLeft)}px`;
-          squaresWrapper.style.left = `${firstSquare.offsetLeft}px`;
+          // squaresWrapper.style.left = `${firstSquare.offsetLeft}px`;
+          squaresWrapper.style.left = "0px"
           newX = `${firstSquare.offsetLeft}px`;
           console.log(`squaresWrapper.offsetLeft ${squaresWrapper.offsetLeft}`)
           console.log("1")
@@ -128,6 +128,7 @@
         const makeActiveSquareInTopOfPassive = () => {
               console.log("Make top!")
               newY = passiveRect.top - passiveRect.height - 1;
+              squaresWrapper.style.left = `${0}px`;
               areSquaresBinded = true;
               isSquareInSquare = true;
         };
@@ -136,6 +137,9 @@
               newX = passiveRect.left - activeRect.width - 1;
               areSquaresBinded = true;
               isSquareInSquare = true;
+              squaresWrapper.style.left = `${0}px`;
+              console.log(squaresWrapper.style.left)
+
             }
             const makeActiveSquareInBottomOfPassive = () => {
               console.log("Make bot!")
@@ -143,6 +147,7 @@
               areSquaresBinded = true;
               console.log(`active top ${newY} = passive bottom = ${passiveRect.bottom + 1}`);
               isSquareInSquare = true;
+              squaresWrapper.style.left = `${0}px`;
             }
             const makeActiveSquareInRightOfPassive = () => {
               console.log("Make right!")
@@ -152,6 +157,7 @@
               newX = passiveRect.right + 1;
               areSquaresBinded = true;
               isSquareInSquare = true;
+              squaresWrapper.style.left = `${0}px`;
             }
 
         const isTopLeftInPassiveSquare = (
