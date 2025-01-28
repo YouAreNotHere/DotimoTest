@@ -57,8 +57,6 @@
 
       const checkBoundaries = (containerRect, square, dX, dY) => {
         const rect = square.getBoundingClientRect();
-        // console.log('containerRect: ', containerRect.left)
-        // console.log('rect.left: ', rect.left)
 
         const isSquareInLeftOfContainer = rect.left > containerRect.left;
         const isSquareInRightContainer = rect.right < containerRect.right;
@@ -102,66 +100,39 @@
             }
             const makeActiveSquareInBottomOfPassive = () => {
               console.log("Make bot!")
-              // currentActiveSquare.style.top  = passiveRect.bottom + 1;
               newY  = passiveRect.bottom + 1;
               isSquareInSquare = true;
               console.log(`active top ${newY} = passive bottom = ${passiveRect.bottom + 1}`)
             }
             const makeActiveSquareInRightOfPassive = () => {
               console.log("Make right!")
-              // currentActiveSquare.style.left = passiveRect.right + 1;
               newX = passiveRect.right + 1;
               isSquareInSquare = true;
             }
 
-        // const isTopLeftInPassiveSquare = (
-        //   passiveRect.left < newX
-        //   & passiveRect.right > newX
-        //   & passiveRect.top < newY
-        //   & passiveRect.bottom > newY
-        // )
-
         const isTopLeftInPassiveSquare = (
-          passiveRect.left < activeRect.left
-          & passiveRect.right > activeRect.left
-          & passiveRect.top < activeRect.top
-          & passiveRect.bottom > activeRect.top
+          passiveRect.left <= activeRect.left
+          & passiveRect.right >= activeRect.left
+          & passiveRect.top <= activeRect.top
+          & passiveRect.bottom >= activeRect.top
         )
-        // const isTopRightInPassiveSquare = (
-        //   passiveRect.left < (newX + activeRect.width)
-        //   & passiveRect.right > (newX + activeRect.width)
-        //   & passiveRect.top < newY
-        //   & passiveRect.bottom > newY
-        // )
         const isTopRightInPassiveSquare = (
-          passiveRect.left < (activeRect.right)
-          & passiveRect.right > (activeRect.right)
-          & passiveRect.top < activeRect.top
-          & passiveRect.bottom > activeRect.top
+          passiveRect.left <= (activeRect.right)
+          & passiveRect.right >= (activeRect.right)
+          & passiveRect.top <= activeRect.top
+          & passiveRect.bottom >= activeRect.top
         )
-        // const isBottomRightInPassiveSquare = (
-        //   passiveRect.left < (newX + activeRect.width)
-        //   & passiveRect.right > (newX + activeRect.width)
-        //   & passiveRect.top < (newY + activeRect.height)
-        //   & passiveRect.bottom > (newY + activeRect.height)
-        // )
         const isBottomRightInPassiveSquare = (
-          passiveRect.left < activeRect.right
-          & passiveRect.right > activeRect.right
-          & passiveRect.top < activeRect.bottom
-          & passiveRect.bottom > activeRect.bottom
+          passiveRect.left <= activeRect.right
+          & passiveRect.right >= activeRect.right
+          & passiveRect.top <= activeRect.bottom
+          & passiveRect.bottom >= activeRect.bottom
         )
-        // const isBottomLeftInPassiveSquare = (
-        //   passiveRect.left < newX
-        //   & passiveRect.right > newX
-        //   & passiveRect.top < (newY + activeRect.height)
-        //   & passiveRect.bottom > (newY + activeRect.height)
-        // )
         const isBottomLeftInPassiveSquare = (
-          passiveRect.left < activeRect.left
-          & passiveRect.right > activeRect.left
-          & passiveRect.top < activeRect.bottom
-          & passiveRect.bottom > activeRect.bottom
+          passiveRect.left <= activeRect.left
+          & passiveRect.right >= activeRect.left
+          & passiveRect.top <= activeRect.bottom
+          & passiveRect.bottom >= activeRect.bottom
         )
 
         const squaresAreTouched = isTopLeftInPassiveSquare
@@ -227,7 +198,7 @@
       };
 
 
-      window.addEventListener('mousemove', function(e) {
+      container.addEventListener('mousemove', function(e) {
         if (!currentActiveSquare) return;
 
         newX = e.clientX - activeOffsetX;
@@ -254,6 +225,9 @@
         currentActiveSquare.style.left = `${activeRect.left + e.movementX}px`;
         currentActiveSquare.style.top = `${activeRect.top + e.movementY}px`;
 
+        // const dX = newX - activeRect.left;
+        // const dY = newY - activeRect.top;
+
         if (areSquaresBinded) {
           currentPassiveSquare.style.left = `${passiveRect.left + e.movementX}px`;
           currentPassiveSquare.style.top = `${passiveRect.top + e.movementY}px`;
@@ -261,8 +235,6 @@
 
       });
 
-
-      // Окончание перетаскивания
       window.addEventListener('mouseup', function() {
           currentActiveSquare.style.transition = "";
           currentActiveSquare = null;

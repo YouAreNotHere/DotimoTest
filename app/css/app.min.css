@@ -1572,7 +1572,7 @@
 }
 .body-wrapper {
   width: 800px;
-  height: 800px;
+  height: 600px;
   background-color: azure;
   display: -webkit-box;
   display: -ms-flexbox;
