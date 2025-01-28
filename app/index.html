@@ -11,12 +11,12 @@
   </head>
   <body class="page__body">
     <div class = "body-wrapper" id = "container">
-<!--      <div class = "squares-wrapper" id = "squares-wrapper">-->
+      <div class = "squares-wrapper" id = "squares-wrapper">
         <div class = "first-square" id = "first-square">
         </div>
         <div class = "second-square"  id = "second-square">
         </div>
-<!--      </div>-->
+      </div>
       <div class="instument-bar">
       </div>
     </div>
@@ -28,6 +28,7 @@
       const squaresWrapper = document.getElementById('squares-wrapper');
       const container = document.getElementById('container');
       let areSquaresBinded = false;
+      let areBindedInCurrentSession = false;
       let currentActiveSquare;
       let currentPassiveSquare;
 
@@ -35,22 +36,58 @@
 
       let newX, newY;
 
+      const makeWrapperActive = () => {
+        console.log(`${parseInt(secondSquare.style.left) + parseInt(secondSquare.offsetWidth) - parseInt(firstSquare.style.left)}px`);
+        if (parseInt(firstSquare.offsetLeft) < parseInt(secondSquare.offsetLeft)){
+          squaresWrapper.style.width = `${parseInt(secondSquare.offsetLeft) + parseInt(secondSquare.offsetWidth) - parseInt(firstSquare.offsetLeft)}px`;
+          squaresWrapper.style.left = `${firstSquare.offsetLeft}px`;
+          newX = `${firstSquare.offsetLeft}px`;
+          console.log(`squaresWrapper.offsetLeft ${squaresWrapper.offsetLeft}`)
+          console.log("1")
+        }else{
+          squaresWrapper.style.width = `${parseInt(firstSquare.offsetLeft) + parseInt(firstSquare.offsetWidth) - parseInt(secondSquare.offsetLeft)}px`;
+          squaresWrapper.style.left = `${secondSquare.offsetLeft}px`;
+          console.log("2")
+        }
+        if (firstSquare.offsetTop < secondSquare.offsetTop){
+          squaresWrapper.style.height = `${parseInt(secondSquare.offsetTop) + parseInt(secondSquare.offsetHeight) - parseInt(firstSquare.offsetTop)}px`;
+          squaresWrapper.style.top = `${firstSquare.offsetLeft}px`;
+          console.log("3")
+        }else{
+          squaresWrapper.style.height = `${parseInt(firstSquare.offsetTop) + parseInt(firstSquare.offsetHeight) - parseInt(secondSquare.offsetTop)}px`;
+          squaresWrapper.style.top = `${secondSquare.offsetLeft}px`;
+          console.log("4")
+        }
+
+
+        currentActiveSquare = squaresWrapper;
+      }
+
       firstSquare.addEventListener('mousedown', function(e) {
-
-        currentActiveSquare = firstSquare;
-        currentPassiveSquare = secondSquare;
-
+        if (areSquaresBinded) {
+          activeOffsetX = e.clientX - squaresWrapper.getBoundingClientRect().left;
+          activeOffsetY = e.clientY - squaresWrapper.getBoundingClientRect().top;
+          makeWrapperActive();
+          return;
+        }
         activeOffsetX = e.clientX - firstSquare.getBoundingClientRect().left;
         activeOffsetY = e.clientY - firstSquare.getBoundingClientRect().top;
+        currentActiveSquare = firstSquare;
+        currentPassiveSquare = secondSquare;
 
       });
 
       secondSquare.addEventListener('mousedown', function(e) {
-        currentActiveSquare = secondSquare;
-        currentPassiveSquare = firstSquare;
-
+        if (areSquaresBinded) {
+          activeOffsetX = e.clientX - squaresWrapper.getBoundingClientRect().left;
+          activeOffsetY = e.clientY - squaresWrapper.getBoundingClientRect().top;
+          makeWrapperActive();
+          return;
+        }
         activeOffsetX = e.clientX - secondSquare.getBoundingClientRect().left;
         activeOffsetY = e.clientY - secondSquare.getBoundingClientRect().top;
+        currentActiveSquare = secondSquare;
+        currentPassiveSquare = firstSquare;
 
       });
 
@@ -91,22 +128,29 @@
         const makeActiveSquareInTopOfPassive = () => {
               console.log("Make top!")
               newY = passiveRect.top - passiveRect.height - 1;
+              areSquaresBinded = true;
               isSquareInSquare = true;
-            };
+        };
             const makeActiveSquareInLeftOfPassive = () => {
               console.log("Make left!")
               newX = passiveRect.left - activeRect.width - 1;
+              areSquaresBinded = true;
               isSquareInSquare = true;
             }
             const makeActiveSquareInBottomOfPassive = () => {
               console.log("Make bot!")
               newY  = passiveRect.bottom + 1;
+              areSquaresBinded = true;
+              console.log(`active top ${newY} = passive bottom = ${passiveRect.bottom + 1}`);
               isSquareInSquare = true;
-              console.log(`active top ${newY} = passive bottom = ${passiveRect.bottom + 1}`)
             }
             const makeActiveSquareInRightOfPassive = () => {
               console.log("Make right!")
+              currentActiveSquare.style.left = `${passiveRect.right + 1}px`;
+              console.log(passiveRect.right)
+              console.log(currentActiveSquare.style.left)
               newX = passiveRect.right + 1;
+              areSquaresBinded = true;
               isSquareInSquare = true;
             }
 
@@ -140,9 +184,6 @@
           || isBottomRightInPassiveSquare
           || isBottomLeftInPassiveSquare;
 
-        if (squaresAreTouched) {
-          areSquaresBinded = true;
-        }
 
         const isTopLeftCornerInRightOfPassiveSquare =
           (passiveRect.right - activeRect.left) < (passiveRect.bottom - activeRect.top);
@@ -160,7 +201,6 @@
               }else{
                 makeActiveSquareInBottomOfPassive()
                 console.log("TopLeft to bottom collision")
-                console.log(`passive right ${passiveRect.right} - newX ${newX} < passive bottom${passiveRect.bottom} - newY${newY}`)
               }
             }
 
@@ -194,11 +234,19 @@
               }
             }
 
+        if (isSquareInSquare) {
+          areSquaresBinded = true;
+          makeWrapperActive();
+          window.removeEventListener('mousemove', handleMouseMove);
+          console.log("remove")
+          areBindedInCurrentSession = true;
+        }
+
+        console.log(`isSquareInSquare ${isSquareInSquare}`);
             return isSquareInSquare;
       };
 
-
-      container.addEventListener('mousemove', function(e) {
+      function handleMouseMove (e){
         if (!currentActiveSquare) return;
 
         newX = e.clientX - activeOffsetX;
@@ -206,39 +254,42 @@
 
         const containerRect = container.getBoundingClientRect();
         const activeRect = currentActiveSquare.getBoundingClientRect();
+        let isPassiveSquareInContainer;
 
         let passiveRect;
-        if (!!currentPassiveSquare) passiveRect = currentPassiveSquare.getBoundingClientRect();
+        if (!!currentPassiveSquare) {
+          passiveRect = currentPassiveSquare.getBoundingClientRect();
+          isPassiveSquareInContainer = checkBoundaries(containerRect, currentPassiveSquare, e.movementX, e.movementY);
+        }
 
         const isActiveSquareInContainer = checkBoundaries(containerRect, currentActiveSquare, e.movementX, e.movementY);
-        const isPassiveSquareInContainer = checkBoundaries(containerRect, currentPassiveSquare, e.movementX, e.movementY);
 
-        if (!isActiveSquareInContainer || (areSquaresBinded && !isPassiveSquareInContainer)) return;
+        if (!isActiveSquareInContainer) return;
+        let isSquareInSquare;
 
-        const isSquareInSquare = checkCollision();
-        if (isSquareInSquare) {
+        console.log(`Wrapper before check ${squaresWrapper.offsetLeft}`)
+        if (!areSquaresBinded) {
+          isSquareInSquare = checkCollision();
+        }
+        if (isSquareInSquare) return;
+        console.log(`Wrapper after check ${squaresWrapper.offsetLeft}`)
+
+        if (!isSquareInSquare){
           currentActiveSquare.style.left = `${newX}px`;
           currentActiveSquare.style.top = `${newY}px`;
-          return;
         }
+        console.log(`Wrapper after end ${squaresWrapper.offsetLeft}`)
+      }
 
-        currentActiveSquare.style.left = `${activeRect.left + e.movementX}px`;
-        currentActiveSquare.style.top = `${activeRect.top + e.movementY}px`;
-
-        // const dX = newX - activeRect.left;
-        // const dY = newY - activeRect.top;
-
-        if (areSquaresBinded) {
-          currentPassiveSquare.style.left = `${passiveRect.left + e.movementX}px`;
-          currentPassiveSquare.style.top = `${passiveRect.top + e.movementY}px`;
-        }
-
-      });
+      window.addEventListener('mousemove', (e)=>handleMouseMove(e));
 
       window.addEventListener('mouseup', function() {
-          currentActiveSquare.style.transition = "";
+        // if (areBindedInCurrentSession) {
+        //   squaresWrapper.style.left = "100px";
+        // }
           currentActiveSquare = null;
           currentPassiveSquare = null;
+          areBindedInCurrentSession = false;
       });
 
     </script>
