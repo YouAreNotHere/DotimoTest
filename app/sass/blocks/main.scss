@@ -1,9 +1,24 @@
-.body-wrapper{
+.page__body{
+  padding: 0;
+  margin: 0;
+}
 
+.container{
+  position: relative;
+  padding: 0;
+  margin: 20px;
   width: 800px;
   height: 600px;
   background-color: azure;
   display: flex;
+}
+
+.body-wrapper{
+  width: 800px;
+  height: 600px;
+  background-color: azure;
+  display: flex;
+  padding: 0px;
 }
 
 .first-square, .second-square{
@@ -11,33 +26,74 @@
   height: 200px;
   position: absolute;
   cursor: move;
+  top: 0px;
+  padding: 0;
 }
 
 .first-square{
   background-color: #5eaa2f;
+  left: 0px;
 }
 
 .second-square{
   background-color: plum;
   left: 400px;
+  width: 200px;
 }
 
 .instument-bar {
   position: absolute;
-  width: 150px;
-  height: 50px;
-  right: 20px;
-  top: 8px;
-  background-color: lavenderblush;
+  width: 200px;
+  height: 100px;
+  right: -270px;
+  background-color: white;
+  border: 5px solid lavenderblush;
   z-index: 1;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
 }
 
 .squares-wrapper{
-  position: absolute;
-  top: 0;
-  left: 0;
-  background-color: navajowhite;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  top: 0px;
+  left: 0px;
   z-index: 2;
-  width: 400px;
-  height: 400px;
+  padding: 0;
+  margin: 0;
 };
+
+.bindSquares-button {
+  bottom: -150px;
+  border-radius: 15px;
+  color: white;
+  background-color: blue;
+  width: 150px;
+  height: 50px;
+}
+
+.button-hidden{
+  display: none;
+}
+
+.change-to-red-button,
+.change-to-blue-button,
+.change-to-yellow-button {
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
+}
+
+.change-to-red-button{
+  background-color: red;
+}
+
+.change-to-blue-button{
+  background-color: blue;
+}
+
+.change-to-yellow-button{
+  background-color: yellow;
+}
