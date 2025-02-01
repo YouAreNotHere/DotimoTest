@@ -23,10 +23,16 @@ const imageminMozjpeg = require('imagemin-mozjpeg');
 const pngquant     = require('imagemin-pngquant');
 const cache        = require('gulp-cache');
 const htmlmin      = require('gulp-htmlmin');
+const ghPages = require('gulp-gh-pages');
 const paths = {
   scss: './app/sass/blocks/*.scss',
 };
 let preprocessor = 'sass';
+
+function deploy () {
+    return src('dist/**/*')
+        .pipe(ghPages());
+};
 
 function browsersync(){
 browserSync.init({
@@ -181,7 +187,8 @@ function minify(){
   exports.svgspritebuil = svgSpriteBuil;
   exports.images        = images;
   exports.webp          = weBp;
-  exports.minify        =minify;
+  exports.minify        = minify;
+  exports.deploy        = deploy;
 
  //exports.imagesmozjpeg = imagesMozjpeg;
 
