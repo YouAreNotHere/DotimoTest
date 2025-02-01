@@ -1,5 +1,4 @@
 function defaultTask(cb) {
-    // place code for your default task here
     cb();
   }
 
@@ -27,11 +26,6 @@ const htmlmin      = require('gulp-htmlmin');
 const paths = {
   scss: './app/sass/blocks/*.scss',
 };
-//const stylelint = require ("stylelint");
-//import gulp-imagemin from "gulp-imagemin";
-//const tests = require ("testScssLint");
-//const runsequence = require("run-sequence");
-//const gwatch = require("gulp-watch");
 let preprocessor = 'sass';
 
 function browsersync(){
@@ -49,7 +43,7 @@ function scripts(){
     .pipe(browserSync.stream())
 }
 
-function cleandist(){
+function cleandist (){
     return delete("dist/**/*", { force: true })
 }
 
@@ -70,7 +64,6 @@ function images(){
           imagemin.gifsicle({interlaced: true}),
           imagemin.mozjpeg({quality: 10, progressive: true}),
           imagemin.optipng({optimizationLevel: 18}),
-          //imagemin.jpegtran({progressive: true}),
         ]),
       ),
     )
@@ -182,7 +175,8 @@ function minify(){
   exports.scripts       = scripts;
   exports.default       = parallel(scripts,styles, browsersync, startwatch);
   exports.styles        = styles;
-  exports.build         = series(cleandist, styles, scripts, buildcopy);
+  // exports.build         = series(cleandist, styles, scripts, buildcopy);
+  exports.build         = series(styles, scripts, buildcopy);
   exports.svgsprite     = svgsprite;
   exports.svgspritebuil = svgSpriteBuil;
   exports.images        = images;

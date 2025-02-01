@@ -17,17 +17,19 @@
         <div class = "second-square"  id = "second-square">
         </div>
       </div>
-      <div class="instument-bar">
-        <button class="change-to-red-button" id = "change-to-red-button" onclick="onClickChangeRedHandler()">
-        </button>
-        <button class="change-to-blue-button" id = "change-to-blue-button" onclick="onClickChangeBlueHandler()">
-        </button>
-        <button class="change-to-yellow-button" id = "change-to-yellow-button" onclick="onClickChangeYellowHandler()">
-        </button>
-      </div>
-        <button class="bindSquares-button, button-hidden" id = "bindSquares-button" onclick="onclickUnbindHandler()">
-          Разъединить
-        </button>
+  </div>
+  <div>
+    <div class="instument-bar">
+      <button class="change-to-violet-button" id = "change-to-violet-button" onclick="onClickChangeVioletHandler()">
+      </button>
+      <button class="change-to-green-button" id = "change-to-green-button" onclick="onClickChangeGreenHandler()">
+      </button>
+      <button class="change-to-yellow-button" id = "change-to-yellow-button" onclick="onClickChangeYellowHandler()">
+      </button>
+    </div>
+    <button class="bindSquares-button, button-hidden" id = "bindSquares-button" onclick="onclickUnbindHandler()">
+      Разъединить
+    </button>
   </div>
   </body>
 
@@ -105,25 +107,33 @@
             firstSquare.style.left = `${firstSquare.offsetLeft - 15}px`
           }
         }
+
+        button.classList.add("button-hidden")
       }
 
-      function onClickChangeRedHandler (square) {
-        console.log("red")
+      function onClickChangeVioletHandler (square) {
+        console.log("violet")
+        console.log(`currentChangedColor ${currentChangedColor}`)
+        console.log(`square`)
+        console.dir(square)
         if (!currentChangedColor){
-          currentChangedColor = "red";
+          currentChangedColor = "violet";
           return
         }
-        square.style.backgroundColor = "red";
+        square.style.backgroundColor = "plum";
         currentChangedColor = null;
       }
 
-      function onClickChangeBlueHandler (square) {
-        console.log("blue")
+      function onClickChangeGreenHandler (square) {
+        console.log("green")
+        console.log(`currentChangedColor ${currentChangedColor}`)
+        console.log(`square`)
+        console.dir(square)
         if (!currentChangedColor){
-          currentChangedColor = "blue";
+          currentChangedColor = "green";
           return
         }
-        square.style.backgroundColor = "blue";
+        square.style.backgroundColor = "#5eaa2f";
         currentChangedColor = null;
       }
 
@@ -191,12 +201,15 @@
         currentPassiveSquare = secondSquare;
 
         switch (currentChangedColor) {
-          case "red":
-            onClickChangeRedHandler(currentActiveSquare);
-          case "blue":
-            onClickChangeBlueHandler(currentActiveSquare);
+          case "violet":
+            onClickChangeVioletHandler(currentActiveSquare)
+            break;
+          case "green":
+            onClickChangeGreenHandler(currentActiveSquare)
+            break;
           case "yellow":
-            onClickChangeYellowHandler(currentActiveSquare);
+            onClickChangeYellowHandler(currentActiveSquare)
+            break;
           default:
             break;
         }
@@ -215,12 +228,15 @@
         currentPassiveSquare = firstSquare;
 
         switch (currentChangedColor) {
-          case "red":
-            onClickChangeRedHandler(currentActiveSquare);
-          case "blue":
-            onClickChangeBlueHandler(currentActiveSquare);
+          case "violet":
+            onClickChangeVioletHandler(currentActiveSquare)
+            break;
+          case "green":
+            onClickChangeGreenHandler(currentActiveSquare)
+            break;
           case "yellow":
-            onClickChangeYellowHandler(currentActiveSquare);
+            onClickChangeYellowHandler(currentActiveSquare)
+            break;
           default:
             break;
         }
@@ -262,7 +278,7 @@
         let isSquareInSquare = false;
 
         const makeActiveSquareInTopOfPassive = () => {
-              currentActiveSquare.style.top = `${passiveRect.top - passiveRect.height - 1}px`;
+              currentActiveSquare.style.top = `${passiveRect.top - passiveRect.height - 20}px`;
               isSquareInSquare = true;
         };
             const makeActiveSquareInLeftOfPassive = () => {
@@ -270,11 +286,11 @@
               isSquareInSquare = true;
             }
             const makeActiveSquareInBottomOfPassive = () => {
-              currentActiveSquare.style.top  = `${passiveRect.bottom + 1}px`;
+              currentActiveSquare.style.top  = `${passiveRect.bottom - 20}px`;
               isSquareInSquare = true;
             }
             const makeActiveSquareInRightOfPassive = () => {
-              currentActiveSquare.style.left = `${passiveRect.right + 1}px`;
+              currentActiveSquare.style.left = `${passiveRect.right - 20}px`;
               isSquareInSquare = true;
             }
 

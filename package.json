@@ -19,6 +19,7 @@
     "@babel/preset-env": "^7.21.4",
     "@htmlacademy/editorconfig-cli": "^1.0.0",
     "browser-sync": "^2.27.x",
+    "del": "^8.0.0",
     "editorconfig-cli": "^0.3.0",
     "gulp": "^4.0.2",
     "gulp-autoprefixer": "^8.0.x",

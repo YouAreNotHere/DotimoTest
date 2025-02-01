@@ -1570,7 +1570,17 @@
   display: -ms-flexbox;
   display: flex
 }
-.body-wrapper {
+.page__body {
+  padding: 0;
+  margin: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex
+}
+.container {
+  position: relative;
+  padding: 0;
+  margin: 20px;
   width: 800px;
   height: 600px;
   background-color: azure;
@@ -1578,37 +1588,85 @@
   display: -ms-flexbox;
   display: flex
 }
+.body-wrapper {
+  width: 800px;
+  height: 600px;
+  background-color: azure;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  padding: 0
+}
 .first-square,
 .second-square {
   width: 200px;
   height: 200px;
   position: absolute;
-  cursor: move
+  cursor: move;
+  top: 0;
+  padding: 0
 }
 .first-square {
-  background-color: #5eaa2f
+  background-color: #5eaa2f;
+  left: 0
 }
 .second-square {
   background-color: plum;
-  left: 400px
+  left: 400px;
+  width: 200px
 }
 .instument-bar {
-  position: absolute;
-  width: 150px;
-  height: 50px;
-  right: 20px;
-  top: 8px;
-  background-color: #fff0f5;
-  z-index: 1
+  width: 200px;
+  height: 100px;
+  background-color: #fff;
+  border: 5px solid #fff0f5;
+  z-index: 1;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin: 20px 0 20px 0
 }
 .squares-wrapper {
-  position: absolute;
+  position: relative;
+  width: 100%;
+  height: 100%;
   top: 0;
   left: 0;
-  background-color: #ffdead;
   z-index: 2;
-  width: 400px;
-  height: 400px
+  padding: 0;
+  margin: 0
+}
+.bindSquares-button {
+  border-radius: 15px;
+  color: #fff;
+  background-color: #00f;
+  width: 150px;
+  height: 50px;
+  margin-left: 30px
+}
+.button-hidden {
+  display: none
+}
+.change-to-green-button,
+.change-to-violet-button,
+.change-to-yellow-button {
+  width: 40px;
+  height: 40px;
+  border-radius: 20px
+}
+.change-to-violet-button {
+  background-color: plum
+}
+.change-to-green-button {
+  background-color: #5eaa2f
+}
+.change-to-yellow-button {
+  background-color: #ff0
 }
 .page-header {
   display: -webkit-box;
